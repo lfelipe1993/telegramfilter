@@ -31,8 +31,9 @@ public class Main {
 		//(?si)^.*\biphone\b.*$ -- pega a linha toda que tem iphone
 		Pattern getHasIphone = Pattern.compile("^.*\\biphone\\b.*$",Pattern.CASE_INSENSITIVE + Pattern.MULTILINE);
 		String pHasIphone = "(?si).*\\biphone\\b.*";
-		// Pattern pValores = Pattern.compile("(-?[0-9]+[\\.][0-9]+[\\,]+[0-9]*)");
-		Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]*[0-9]*)");
+		//Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]+[0-9]*)");
+		//Pattern pValores = Pattern.compile("(-?[0-9]+([\\.])?[0-9]{3}([\\,][0-9]{2})?)");
+		Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]+[0-9]*)|(-?[0-9]{1,2}[\\.][0-9]{3})");
 		// async
 		bot.execute(getUpdates, new Callback<GetUpdates, GetUpdatesResponse>() {
 
@@ -46,7 +47,6 @@ public class Main {
 		});
 
 		bot.setUpdatesListener(new UpdatesListener() {
-			@SuppressWarnings("static-access")
 			@Override
 			public int process(List<Update> updates) {
 				for (Update update : updates) {
@@ -74,10 +74,13 @@ public class Main {
 
 							if (modelo != "" && armaz != "") {
 								System.out.println("Modelo: " + modelo + armaz);
-								modelos = modelos.toEnum(modelo + armaz);
+								modelos = Check.getModeloMethod(modelo , armaz);
 							}
 
-							if (Check.checkPrice(pValores.matcher(text), modelos).isPresent()) {
+							//replace por conta de bug em caracteres especiais
+							if (Check.checkPrice(pValores.matcher(text
+									.replace("_", "").replace("?", "")), 
+									modelos).isPresent()) {
 								System.out.println("Envio msg");
 								bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text));
 							}

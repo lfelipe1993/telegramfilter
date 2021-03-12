@@ -85,7 +85,8 @@ public class Check {
 		//list.forEach(System.out::println);
 
 		checkPrice = list.stream().map(x -> x.replaceAll("(?:[^\\d\\,])", "").replace(",", "."))
-				.map(Double::parseDouble).filter(x -> x < model.getLimitPrice()).findAny();
+				.map(Double::parseDouble).filter(
+				x -> x < model.getLimitPrice() && x > 1800 && x < 13000).findAny();
 
 		return checkPrice;
 	}
