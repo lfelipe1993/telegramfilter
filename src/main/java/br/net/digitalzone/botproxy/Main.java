@@ -25,7 +25,7 @@ public class Main {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		System.out.println("Iniciando a aplicação [" + LocalDateTime.now() + "]");
-		TelegramBot bot = new TelegramBot("1681119313:AAGmH3_3ooW_fy8aom2YBRFZXukDSaA4Tck");
+		TelegramBot bot = new TelegramBot("");
 		GetUpdates getUpdates = new GetUpdates().limit(100).offset(0).timeout(0);
 
 		//(?si)^.*\biphone\b.*$ -- pega a linha toda que tem iphone
