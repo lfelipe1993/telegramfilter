@@ -3,7 +3,9 @@ br\net\digitalzone\botproxy\Program$1.class
 br\net\digitalzone\botproxy\Check.class
 br\net\digitalzone\botproxy\Main$2.class
 br\net\digitalzone\botproxy\Main.class
+br\net\digitalzone\botproxy\model\Usuarios.class
 br\net\digitalzone\botproxy\Program$2.class
 br\net\digitalzone\botproxy\model\Modelos.class
 br\net\digitalzone\botproxy\Main$1.class
 br\net\digitalzone\botproxy\Teste.class
+br\net\digitalzone\botproxy\TelegramNotifier.class

@@ -3,6 +3,7 @@ package br.net.digitalzone.botproxy;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.pengrad.telegrambot.Callback;
@@ -24,8 +25,9 @@ public class Main {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+		
 		System.out.println("Iniciando a aplicação [" + LocalDateTime.now() + "]");
-		TelegramBot bot = new TelegramBot("1681119313:AAGmH3_3ooW_fy8aom2YBRFZXukDSaA4Tck");
+		TelegramBot bot = new TelegramBot("");
 		GetUpdates getUpdates = new GetUpdates().limit(100).offset(0).timeout(0);
 
 		//(?si)^.*\biphone\b.*$ -- pega a linha toda que tem iphone
@@ -76,13 +78,22 @@ public class Main {
 								System.out.println("Modelo: " + modelo + armaz);
 								modelos = Check.getModeloMethod(modelo , armaz);
 							}
+							
+							Optional<Double> bp = Check.checkPrice(pValores.matcher(text
+									.replace("_", "").replace("?", "")), 
+									modelos);
 
 							//replace por conta de bug em caracteres especiais
-							if (Check.checkPrice(pValores.matcher(text
-									.replace("_", "").replace("?", "")), 
-									modelos).isPresent()) {
+							if (bp.isPresent()) {
 								System.out.println("Envio msg");
 								bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text));
+							
+
+							if(bp.get() < (modelos.getLimitPrice() * 0.90)) {
+								System.out.println("Acordou todo mundo!!!");
+								TelegramNotifier.sendNotification(modelos,bp.get());
+							};
+							
 							}
 						}
 					}
