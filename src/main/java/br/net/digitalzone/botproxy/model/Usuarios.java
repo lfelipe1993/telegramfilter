@@ -3,6 +3,7 @@ package br.net.digitalzone.botproxy.model;
 public enum Usuarios {
 	LUIZ("Luiz", "@lfelipe1993"),
 	JOABE("Cafetão da Bahêa", "@Jobasbdo"),
+	FERNANDO("Mestre dos podcasts", "@Fernando9790"),
 	EMERSON("Rei dos modelos de reclamações", "@emersonbezerril");
 	
 	private String nome;

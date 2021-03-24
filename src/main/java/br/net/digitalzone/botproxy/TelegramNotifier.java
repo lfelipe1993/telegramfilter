@@ -50,13 +50,23 @@ public class TelegramNotifier {
 		Response res = null;
 		try {
 			res = future.get(5, TimeUnit.SECONDS);
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}finally {
-			res.close();
+			if(res != null) {
+				res.close();
+			}
 		}
 		
-		System.out.println("Status the Call for " + user + " : " + res.getStatus());
+		if(res != null) {
+			System.out.println("Status the Call for " + user + " : " + res.getStatus());
+		}else {
+			System.out.println("Não foi possível enviar mensagem para o user "  + user);
+		}
 	}
 	
 	public static void sendNotificationOld(String message, String user) {

@@ -84,9 +84,9 @@ public class Main {
 									modelos);
 
 							//replace por conta de bug em caracteres especiais
-							if (bp.isPresent()) {
+							if (bp.isPresent() && modelos != null) {
 								System.out.println("Envio msg");
-								bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text));
+								bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text).disableWebPagePreview(true));
 							
 
 							if(bp.get() < (modelos.getLimitPrice() * 0.90)) {
