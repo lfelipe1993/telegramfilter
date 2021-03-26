@@ -39,36 +39,37 @@ public class TelegramNotifier {
 
 	public static void sendNotification(String message, String user) {
 
-		Client client = ClientBuilder.newClient();
-
-		UriBuilder builder = UriBuilder.fromUri("https://api.callmebot.com/start.php").queryParam("user", user)
-				.queryParam("text", message).queryParam("lang", "pt-BR-Standard-A").queryParam("rpt", "2");
-
-		Future<Response> future = client.target(builder).request().async().get();
-		
 		// block until complete
 		Response res = null;
+
 		try {
-			res = future.get(5, TimeUnit.SECONDS);
+			Client client = ClientBuilder.newClient();
+
+			UriBuilder builder = UriBuilder.fromUri("https://api.callmebot.com/start.php").queryParam("user", user)
+					.queryParam("text", message).queryParam("lang", "pt-BR-Standard-A").queryParam("rpt", "2");
+
+			Future<Response> future = client.target(builder).request().async().get();
+
+			res = future.get(10, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			System.out.println("TimeOut");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-		}finally {
-			if(res != null) {
+		} finally {
+			if (res != null) {
 				res.close();
 			}
 		}
-		
-		if(res != null) {
+
+		if (res != null) {
 			System.out.println("Status the Call for " + user + " : " + res.getStatus());
-		}else {
-			System.out.println("Não foi possível enviar mensagem para o user "  + user);
+		} else {
+			System.out.println("Não foi possível enviar mensagem para o user " + user);
 		}
 	}
-	
+
 	public static void sendNotificationOld(String message, String user) {
 
 		HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5))

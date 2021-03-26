@@ -20,21 +20,20 @@ public class Main {
 	public static String modelo = "";
 	public static String armaz = "";
 	public static Modelos modelos = null;
-	public static Integer count = 0;
-	public static final Integer limitCount = 100;
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		
+
 		System.out.println("Iniciando a aplicação [" + LocalDateTime.now() + "]");
 		TelegramBot bot = new TelegramBot("");
 		GetUpdates getUpdates = new GetUpdates().limit(100).offset(0).timeout(0);
 
-		//(?si)^.*\biphone\b.*$ -- pega a linha toda que tem iphone
-		Pattern getHasIphone = Pattern.compile("^.*\\biphone\\b.*$",Pattern.CASE_INSENSITIVE + Pattern.MULTILINE);
+		// (?si)^.*\biphone\b.*$ -- pega a linha toda que tem iphone
+		Pattern getHasIphone = Pattern.compile("^.*\\biphone\\b.*$", Pattern.CASE_INSENSITIVE + Pattern.MULTILINE);
 		String pHasIphone = "(?si).*\\biphone\\b.*";
-		//Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]+[0-9]*)");
-		//Pattern pValores = Pattern.compile("(-?[0-9]+([\\.])?[0-9]{3}([\\,][0-9]{2})?)");
+		// Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]+[0-9]*)");
+		// Pattern pValores =
+		// Pattern.compile("(-?[0-9]+([\\.])?[0-9]{3}([\\,][0-9]{2})?)");
 		Pattern pValores = Pattern.compile("(-?[0-9]+[\\.]*[0-9]+[\\,]+[0-9]*)|(-?[0-9]{1,2}[\\.][0-9]{3})");
 		// async
 		bot.execute(getUpdates, new Callback<GetUpdates, GetUpdatesResponse>() {
@@ -52,8 +51,8 @@ public class Main {
 			@Override
 			public int process(List<Update> updates) {
 				for (Update update : updates) {
-					
-					//System.out.println("Update:" + update);
+
+					// System.out.println("Update:" + update);
 
 					String text = "";
 					if (update.message() != null) {
@@ -76,30 +75,36 @@ public class Main {
 
 							if (modelo != "" && armaz != "") {
 								System.out.println("Modelo: " + modelo + armaz);
-								modelos = Check.getModeloMethod(modelo , armaz);
+								modelos = Check.getModeloMethod(modelo, armaz);
 							}
-							
-							Optional<Double> bp = Check.checkPrice(pValores.matcher(text
-									.replace("_", "").replace("?", "")), 
-									modelos);
 
-							//replace por conta de bug em caracteres especiais
-							if (bp.isPresent() && modelos != null) {
-								System.out.println("Envio msg");
-								bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text).disableWebPagePreview(true));
-							
+							if (modelos != null) {
 
-							if(bp.get() < (modelos.getLimitPrice() * 0.90)) {
-								System.out.println("Acordou todo mundo!!!");
-								TelegramNotifier.sendNotification(modelos,bp.get());
-							};
-							
+								Optional<Double> bp = Check
+										.checkPrice(pValores.matcher(text.replace("_", "").replace("?", "")), modelos);
+								// replace por conta de bug em caracteres especiais
+								
+								if (bp.isPresent()) {
+									System.out.println("Envio msg");
+									bot.execute(new SendMessage("-1001344323551", "***FILTRADA***" + "\n " + text)
+											.disableWebPagePreview(true));
+
+									if (bp.get() < (modelos.getLimitPrice() * 0.90)) {
+										System.out.println("Acordou todo mundo!!!");
+										TelegramNotifier.sendNotification(modelos, bp.get());
+									}
+
+								}
 							}
 						}
 					}
-
+					
+					//clean variaveis
+					modelo = "";
+					armaz = "";
+					modelos = null;
 				}
-				
+
 				return UpdatesListener.CONFIRMED_UPDATES_ALL;
 			}
 		});

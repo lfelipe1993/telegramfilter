@@ -1,5 +1,7 @@
 package br.net.digitalzone.botproxy.model;
 
+import br.net.digitalzone.botproxy.model.exceptions.EnumException;
+
 public enum Modelos {
 	// 5
 	i5_16("iPhone 5", "5", "16", 1000.00, "516"),
@@ -159,7 +161,7 @@ public enum Modelos {
 			}
 		}
 
-		throw new IllegalArgumentException("Modelo inválido: " + sigla);
+		throw new EnumException("Modelo inválido: " + sigla);
 	}
 
 }

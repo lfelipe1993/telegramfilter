@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.net.digitalzone.botproxy.model.Modelos;
+import br.net.digitalzone.botproxy.model.exceptions.EnumException;
 
 public class Check {
 
@@ -94,21 +95,23 @@ public class Check {
 
 		try {
 			while (matPhr.find()) {
-				if (p16GB.matcher(matPhr.group()).find()) {
-					return "16";
-				} else if (p32GB.matcher(matPhr.group()).find()) {
-					return "32";
-				} else if (p64GB.matcher(matPhr.group()).find()) {
-					return "64";
-				} else if (p128GB.matcher(matPhr.group()).find()) {
-					return "128";
+				if (p512GB.matcher(matPhr.group()).find()) {
+					return "512";
 				} else if (p256GB.matcher(matPhr.group()).find()) {
 					return "256";
-				} else if (p512GB.matcher(matPhr.group()).find()) {
-					return "512";
+				} else if (p128GB.matcher(matPhr.group()).find()) {
+					return "128";
+				} else if (p64GB.matcher(matPhr.group()).find()) {
+					return "64";
+				} else if (p32GB.matcher(matPhr.group()).find()) {
+					return "32";
+				}else if (p16GB.matcher(matPhr.group()).find()) {
+					return "16";
 				}
 			}
-		} catch (IllegalStateException e) {
+		} catch (
+
+		IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -129,8 +132,6 @@ public class Check {
 			list.add(mPrices.group());
 		}
 
-		// list.forEach(System.out::println);
-
 		checkPrice = list.stream().map(x -> x.replaceAll("(?:[^\\d\\,])", "").replace(",", "."))
 				.map(Double::parseDouble).filter(x -> x < model.getLimitPrice() && x > 1800 && x < 13000).findAny();
 
@@ -138,11 +139,20 @@ public class Check {
 	}
 
 	public static Modelos getModeloMethod(String model, String armaz) {
+		Modelos modelo = null;
+		
 		if (model == null || armaz == null) {
-			return null;
+			return modelo;
 		}
 
-		return Modelos.toEnum(model.trim() + armaz.trim());
+		try {
+			modelo = Modelos.toEnum(model.trim() + armaz.trim());
+		} catch (EnumException e) {
+			e.getMessage();
+		}
+		
+		return modelo;
 	}
-
+	
+	
 }
