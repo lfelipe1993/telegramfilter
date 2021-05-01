@@ -64,7 +64,7 @@ public class TelegramNotifier {
 		}
 
 		if (res != null) {
-			System.out.println("Status the Call for " + user + " : " + res.getStatus());
+			System.out.println("Status of calling to " + user + " : " + res.getStatus());
 		} else {
 			System.out.println("Não foi possível enviar mensagem para o user " + user);
 		}
