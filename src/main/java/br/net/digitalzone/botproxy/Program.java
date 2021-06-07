@@ -21,7 +21,7 @@ import br.net.digitalzone.botproxy.model.Modelos;
 public class Program {
 
 	public static void main(String[] args) {
-		TelegramBot bot = new TelegramBot("");
+		TelegramBot bot = new TelegramBot("1681119313:AAGmH3_3ooW_fy8aom2YBRFZXukDSaA4Tck");
 
 		GetUpdates getUpdates = new GetUpdates().limit(100).offset(0).timeout(0);
 		// sync
