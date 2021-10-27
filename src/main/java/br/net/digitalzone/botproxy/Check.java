@@ -32,6 +32,10 @@ public class Check {
 		Pattern i12 = Pattern.compile("(?i)\\b(?:iphone 12)\\b(?!.*mini)");
 		Pattern i12P = Pattern.compile("(?i)\\b(?:iphone 12 Pro)\\b");
 		Pattern i12PM = Pattern.compile("(?i)\\b(?:iphone 12 Pro Max)\\b");
+		Pattern i13M = Pattern.compile("(?i)\\b(?:iphone 13 Mini)\\b");
+		Pattern i13 = Pattern.compile("(?i)\\b(?:iphone 13)\\b(?!.*mini)");
+		Pattern i13P = Pattern.compile("(?i)\\b(?:iphone 13 Pro)\\b");
+		Pattern i13PM = Pattern.compile("(?i)\\b(?:iphone 13 Pro Max)\\b");
 
 		try {
 			while (matPhr.find()) {
@@ -67,12 +71,20 @@ public class Check {
 					return "11P";
 				} else if (i12PM.matcher(matPhr.group()).find()) {
 					return "12PM";
+				} else if (i13PM.matcher(matPhr.group()).find()) {
+					return "13PM";
 				} else if (i12P.matcher(matPhr.group()).find()) {
 					return "12P";
+				} else if (i13P.matcher(matPhr.group()).find()) {
+					return "13P";
 				} else if (i12.matcher(matPhr.group()).find()) {
 					return "12";
+				} else if (i13.matcher(matPhr.group()).find()) {
+					return "13";
 				} else if (i12M.matcher(matPhr.group()).find()) {
 					return "12M";
+				}else if (i13M.matcher(matPhr.group()).find()) {
+					return "13M";
 				} else if (i11.matcher(matPhr.group()).find()) {
 					return "11";
 				}
@@ -92,10 +104,13 @@ public class Check {
 		Pattern p128GB = Pattern.compile("(?i)\\b(?:128|128GB)\\b");
 		Pattern p256GB = Pattern.compile("(?i)\\b(?:256|256GB)\\b");
 		Pattern p512GB = Pattern.compile("(?i)\\b(?:512|512GB)\\b");
+		Pattern p1000GB = Pattern.compile("(?i)\\b(?:1000|1TB)\\b");
 
 		try {
 			while (matPhr.find()) {
-				if (p512GB.matcher(matPhr.group()).find()) {
+				if (p1000GB.matcher(matPhr.group()).find()) {
+					return "1000";
+				} else if (p512GB.matcher(matPhr.group()).find()) {
 					return "512";
 				} else if (p256GB.matcher(matPhr.group()).find()) {
 					return "256";
@@ -133,7 +148,7 @@ public class Check {
 		}
 
 		checkPrice = list.stream().map(x -> x.replaceAll("(?:[^\\d\\,])", "").replace(",", "."))
-				.map(Double::parseDouble).filter(x -> x < model.getLimitPrice() && x > 1800 && x < 13000).findAny();
+				.map(Double::parseDouble).filter(x -> x < model.getLimitPrice() && x > 1800 && x < 16000).findAny();
 
 		return checkPrice;
 	}
